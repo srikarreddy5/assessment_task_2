@@ -1,50 +1,66 @@
 pipeline {
   agent any
+
   tools {
-    maven 'Maven' // Ensure this is configured in Jenkins
+    maven 'Maven' // Ensure that 'Maven' is installed and configured in Jenkins under Manage Jenkins > Global Tool Configuration
   }
+
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/srikarreddy5/assessment_task_2.git'
+        // Cloning the repository from GitHub, specifying the branch explicitly
+        git branch: 'main', url: 'https://github.com/srikarreddy5/assessment_task_2.git'
       }
     }
+
     stage('Build') {
       steps {
-        bat 'mvn clean package' // Adjust this if using Linux/Unix, change to 'sh' if needed
+        // Use 'bat' for Windows agents, 'sh' for Linux/Unix agents
+        bat 'mvn clean package' // For Linux/Unix systems, change to 'sh mvn clean package'
       }
     }
+
     stage('Test') {
       steps {
-        bat 'mvn test' // Adjust if needed
+        // Running tests, adjust the command if needed for your environment
+        bat 'mvn test' // Change to 'sh mvn test' for Linux/Unix if necessary
       }
     }
+
     stage('SonarQube Analysis') {
       environment {
-        SONAR_HOST_URL = 'http://192.168.164.58:9000/' // Fixed extra 'http://'
+        // Ensure this is the correct URL for your SonarQube server
+        SONAR_HOST_URL = 'http://192.168.164.58:9000/' // Ensure the URL is correct
       }
       steps {
+        // Using credentials for SonarQube login
         withCredentials([string(credentialsId: 'sonarqube_id', variable: 'SONAR_AUTH_TOKEN')]) {
-          withSonarQubeEnv('srikar_reddy') {
-            bat 'mvn sonar:sonar -Dsonar.login=%SONAR_AUTH_TOKEN%'
+          // Integrating with SonarQube analysis
+          withSonarQubeEnv('srikar_reddy') { // Ensure 'srikar_reddy' is configured in Jenkins
+            bat 'mvn sonar:sonar -Dsonar.login=%SONAR_AUTH_TOKEN%' // Change to 'sh' if using a Linux/Unix agent
           }
         }
       }
     }
+
     stage('Warnings Analysis') {
       steps {
+        // Record warnings and issues from Maven or Java tools
         recordIssues(
-          tools: [java(), maven()],
-          qualityGates: [[threshold: 5, unstable: true]] // Customize as per your thresholds
+          tools: [java(), maven()], // Make sure Java and Maven tools are set up in Jenkins
+          qualityGates: [[threshold: 5, unstable: true]] // Customize this threshold as needed
         )
       }
     }
   }
+
   post {
     success {
+      // Display message upon successful pipeline run
       echo "Pipeline success"
     }
     failure {
+      // Display message upon failure
       echo "Pipeline failure"
     }
   }
