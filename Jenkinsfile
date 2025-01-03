@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     // Set the path for ChromeDriver explicitly
-    CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\\Desktop\\chromedriver_win32\\chromedriver.exe' // Update this with the path where your new ChromeDriver is stored
+    CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\Downloads\\chromedriver_win32 (1)\\chromedriver.exe' // Update this with the path where your new ChromeDriver is stored
   }
 
   stages {
