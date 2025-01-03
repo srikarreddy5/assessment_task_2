@@ -15,10 +15,11 @@ public class LoginAutomationTest {
 
     @Test
     public void testLogin() {
-        // Setting up WebDriver
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe");
+        // Dynamically setting the ChromeDriver path using environment variable
+        String chromeDriverPath = System.getenv("CHROME_DRIVER_PATH");
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
-        // ChromeOptions to disable cache
+        // ChromeOptions to disable cache and logging
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-logging");
         options.addArguments("--disable-cache");
