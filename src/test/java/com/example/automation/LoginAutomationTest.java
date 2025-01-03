@@ -17,6 +17,10 @@ public class LoginAutomationTest {
     public void testLogin() {
         // Dynamically setting the ChromeDriver path using environment variable
         String chromeDriverPath = System.getenv("CHROME_DRIVER_PATH");
+        if (chromeDriverPath == null || chromeDriverPath.isEmpty()) {
+            System.err.println("ChromeDriver path is not set in environment variables.");
+            return;
+        }
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
         // ChromeOptions to disable cache and logging
