@@ -1,50 +1,63 @@
-package org.example;
+package com.example.automation;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import static org.junit.jupiter.api.Assertions.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.time.Duration;
 
 public class LoginAutomationTest {
 
-    private WebDriver driver;
-
-    @BeforeEach
-    public void setUp() {
-        // Set the ChromeDriver path (Jenkins will use the environment variable)
-        String chromeDriverPath = System.getenv("CHROME_DRIVER_PATH");
-        if (chromeDriverPath != null) {
-            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
-        } else {
-            // In case the environment variable isn't set, you can add a fallback
-            System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
-        }
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Run in headless mode
-
-        // Initialize the WebDriver
-        driver = new ChromeDriver(options);
-    }
-
     @Test
     public void testLogin() {
-        driver.get("https://www.selenium.dev/");
+        // Setting up WebDriver
+        System.setProperty("webdriver.chrome.driver", "C:\\Tools\\chromedriver.exe");
 
-        // Verify that the page has loaded correctly
-        String pageTitle = driver.getTitle();
-        assertTrue(pageTitle.contains("Selenium"));
+        // ChromeOptions to disable cache
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-logging");
+        options.addArguments("--disable-cache");
+        options.addArguments("--disk-cache-size=0");
+        options.addArguments("--remote-debugging-port=9223");
+        options.addArguments("--remote-allow-origins=*");
 
-        // Further actions can be added based on your test cases
-    }
+        // Initialize WebDriver with options
+        WebDriver driver = new ChromeDriver(options);
 
-    @AfterEach
-    public void tearDown() {
-        if (driver != null) {
+        // Login credentials and URL
+        String baseUrl = "https://www.saucedemo.com/";
+        String username = "standard_user";
+        String password = "secret_sauce";
+
+        try {
+            // Navigate to the login page
+            driver.get(baseUrl);
+
+            // Locate elements
+            WebElement usernameField = driver.findElement(By.id("user-name"));
+            WebElement passwordField = driver.findElement(By.id("password"));
+            WebElement loginButton = driver.findElement(By.id("login-button"));
+
+            // Perform login
+            usernameField.sendKeys(username);
+            passwordField.sendKeys(password);
+
+            // Wait for the login button to be clickable
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.id("login-button")));
+            loginButton.click();
+
+            // Validate successful login by checking page title
+            String expectedTitle = "Swag Labs";
+            String actualTitle = driver.getTitle();
+            assertEquals(expectedTitle, actualTitle);
+        } finally {
+            // Close the browser
             driver.quit();
         }
     }
