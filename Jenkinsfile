@@ -16,20 +16,21 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Cloning the repository from GitHub, specifying the branch explicitly
+                echo "Cloning repository..."
                 git branch: 'main', url: 'https://github.com/srikarreddy5/assessment_task_2.git'
             }
         }
 
         stage('Build') {
             steps {
-                // Run Maven clean package
+                echo "Building the project with Maven..."
                 bat 'mvn clean package' // For Linux/Unix systems, change to 'sh mvn clean package'
             }
         }
 
         stage('Test') {
             steps {
-                // Run Maven test
+                echo "Running the tests..."
                 bat 'mvn test' // Change to 'sh mvn test' for Linux/Unix if necessary
             }
         }
@@ -40,6 +41,7 @@ pipeline {
                     // Ensure SonarQube environment is available
                     withSonarQubeEnv('srikar_reddy') {  // Ensure 'srikar_reddy' is the name of the SonarQube server configured in Jenkins
                         // Run the Maven goal to trigger SonarQube analysis
+                        echo "Running SonarQube analysis..."
                         bat 'mvn sonar:sonar -Dsonar.login=%SONAR_AUTH_TOKEN%' // Ensure SonarQube login token is handled securely
                     }
                 }
@@ -48,6 +50,7 @@ pipeline {
 
         stage('Warnings Analysis') {
             steps {
+                echo "Analyzing warnings..."
                 // Record warnings and issues from Maven or Java tools
                 recordIssues(
                     tools: [java(), maven()], // Ensure Java and Maven tools are set up in Jenkins
@@ -55,14 +58,21 @@ pipeline {
                 )
             }
         }
+
+        stage('JUnit Test Report') {
+            steps {
+                echo "Publishing JUnit test results..."
+                junit '**/target/test-*.xml'  // Adjust path as necessary based on where Maven places the test reports
+            }
+        }
     }
 
     post {
         success {
-            echo "Pipeline success"
+            echo "Pipeline succeeded!"
         }
         failure {
-            echo "Pipeline failure"
+            echo "Pipeline failed!"
         }
     }
 }
