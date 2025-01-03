@@ -5,6 +5,11 @@ pipeline {
     maven 'Maven' // Ensure that 'Maven' is installed and configured in Jenkins under Manage Jenkins > Global Tool Configuration
   }
 
+  environment {
+    // Set the path for ChromeDriver explicitly
+    CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\Desktop\\chromedriver_win32\\chromedriver.exe' // Update this with the path where your new ChromeDriver is stored
+  }
+
   stages {
     stage('Checkout') {
       steps {
