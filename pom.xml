@@ -29,21 +29,39 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- JUnit Platform Surefire Provider to support JUnit 5 in Surefire plugin -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.8.2</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Selenium WebDriver Dependency -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.0.0</version> <!-- Add the version -->
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Surefire Plugin to run JUnit 5 tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <!-- Run tests using JUnit 5 -->
+                    <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+
             <!-- SonarQube Maven Plugin -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
-
             </plugin>
         </plugins>
     </build>
