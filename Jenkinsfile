@@ -6,9 +6,10 @@ pipeline {
     }
 
     environment {
-        // Path to ChromeDriver if using Selenium
+        // Correctly specify the environment variables
         CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe' // Update this with the correct path
         SONAR_HOST_URL = 'http://192.168.164.58:9000/' // Ensure this is the correct URL for your SonarQube server
+        SONAR_AUTH_TOKEN = credentials('sonarqube_id') // This fetches the SonarQube token from Jenkins Credentials
     }
 
     stages {
@@ -34,15 +35,11 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                // Ensure that 'sonarqube_id' is the correct credentialsId for SonarQube token in Jenkins credentials
-            }
             steps {
                 script {
                     // Ensure SonarQube environment is available
                     withSonarQubeEnv('srikar_reddy') {  // Ensure 'srikar_reddy' is the name of the SonarQube server configured in Jenkins
                         // Run the Maven goal to trigger SonarQube analysis
-                        // Make sure sonar.projectKey and sonar.projectName are properly set in your Maven POM or here as properties
                         bat 'mvn sonar:sonar -Dsonar.login=%SONAR_AUTH_TOKEN%' // Ensure SonarQube login token is handled securely
                     }
                 }
