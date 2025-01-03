@@ -12,24 +12,31 @@
     <name>assessment_task_2</name>
     <url>http://maven.apache.org</url>
 
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- JUnit 5 dependencies -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.7.2</version>
+            <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.8.2</version>
+            <version>1.10.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -37,25 +44,21 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.9.0</version>
-        </dependency>
-
-        <!-- Maven Surefire Plugin for running tests -->
-        <dependency>
-            <groupId>org.apache.maven.surefire</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.2</version>
+            <version>4.10.0</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <!-- Maven Surefire Plugin (updated version for running tests) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M5</version>
                 <configuration>
-                    <skipTests>false</skipTests>
+                    <skipTests>false</skipTests> <!-- Ensure tests are not skipped -->
+                    <testFailureIgnore>false</testFailureIgnore> <!-- Fail the build if tests fail -->
+                    <argLine>-Duser.timezone=UTC</argLine> <!-- Set timezone for consistency in tests -->
                 </configuration>
             </plugin>
         </plugins>
