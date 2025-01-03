@@ -16,7 +16,7 @@ public class LoginAutomationTest {
     @Test
     public void testLogin() {
         // Setting up WebDriver
-        System.setProperty("webdriver.chrome.driver", "C:\\Tools\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe");
 
         // ChromeOptions to disable cache
         ChromeOptions options = new ChromeOptions();
