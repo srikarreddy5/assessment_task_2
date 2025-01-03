@@ -1,38 +1,49 @@
-import org.junit.jupiter.api.AfterEach;
+package org.example;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import io.github.bonigarcia.wdm.WebDriverManager;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.openqa.selenium.chrome.ChromeOptions;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LoginAutomationTest {
 
     private WebDriver driver;
 
     @BeforeEach
-    public void setup() {
-        // Set up WebDriverManager to manage browser drivers
-        WebDriverManager.chromedriver().setup();
+    public void setUp() {
+        // Set the ChromeDriver path (update this to match your local setup)
+        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
 
-        // Initialize ChromeDriver (you can replace this with any other browser)
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless"); // Run in headless mode to avoid UI popping up
+
+        // Initialize the WebDriver
+        driver = new ChromeDriver(options);
     }
 
     @Test
     public void testLogin() {
-        // Open a website (you can replace this with any URL you need)
-        driver.get("http://www.example.com");
+        driver.get("http://example.com/login");
 
-        // Example assertion to verify if the page title contains "Example"
-        assertTrue(driver.getTitle().contains("Example"));
+        // Assuming the login form has fields with id 'username' and 'password'
+        driver.findElement(By.id("username")).sendKeys("testuser");
+        driver.findElement(By.id("password")).sendKeys("password");
+        driver.findElement(By.id("loginButton")).click();
+
+        // Verify login success, e.g., check if redirected to a dashboard page
+        String pageTitle = driver.getTitle();
+        assertEquals("Dashboard", pageTitle);
+
+        // Add more assertions based on the expected behavior after login
     }
 
     @AfterEach
     public void tearDown() {
         if (driver != null) {
-            driver.quit();  // Close the browser after the test
+            driver.quit();
         }
     }
 }
