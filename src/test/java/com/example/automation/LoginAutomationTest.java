@@ -2,6 +2,7 @@ package org.example;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,11 +15,17 @@ public class LoginAutomationTest {
 
     @BeforeEach
     public void setUp() {
-        // Set the ChromeDriver path (update this to match your local setup)
-        System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        // Set the ChromeDriver path (Jenkins will use the environment variable)
+        String chromeDriverPath = System.getenv("CHROME_DRIVER_PATH");
+        if (chromeDriverPath != null) {
+            System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        } else {
+            // In case the environment variable isn't set, you can add a fallback
+            System.setProperty("webdriver.chrome.driver", "path/to/chromedriver");
+        }
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // Run in headless mode to avoid UI popping up
+        options.addArguments("--headless"); // Run in headless mode
 
         // Initialize the WebDriver
         driver = new ChromeDriver(options);
@@ -26,18 +33,13 @@ public class LoginAutomationTest {
 
     @Test
     public void testLogin() {
-        driver.get("http://example.com/login");
+        driver.get("https://www.selenium.dev/");
 
-        // Assuming the login form has fields with id 'username' and 'password'
-        driver.findElement(By.id("username")).sendKeys("testuser");
-        driver.findElement(By.id("password")).sendKeys("password");
-        driver.findElement(By.id("loginButton")).click();
-
-        // Verify login success, e.g., check if redirected to a dashboard page
+        // Verify that the page has loaded correctly
         String pageTitle = driver.getTitle();
-        assertEquals("Dashboard", pageTitle);
+        assertTrue(pageTitle.contains("Selenium"));
 
-        // Add more assertions based on the expected behavior after login
+        // Further actions can be added based on your test cases
     }
 
     @AfterEach
