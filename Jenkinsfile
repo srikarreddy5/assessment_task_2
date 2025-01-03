@@ -7,7 +7,7 @@ pipeline {
 
   environment {
     // Set the path for ChromeDriver explicitly, ensure the path is accessible by Jenkins agent
-    CHROME_DRIVER_PATH = '/path/to/your/chromedriver' // Update with the correct path where ChromeDriver is located
+    CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe' // Update with the correct path where ChromeDriver is located
   }
 
   stages {
