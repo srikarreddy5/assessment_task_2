@@ -7,72 +7,73 @@
     <groupId>org.example</groupId>
     <artifactId>assessment_task_2</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-    <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <name>assessment_task_2</name>
+    <url>http://maven.apache.org</url>
 
     <dependencies>
-        <!-- JUnit 5 Dependencies -->
+        <!-- JUnit 5 dependencies for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
-            <version>5.8.2</version>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.7.2</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Updated JUnit Platform Surefire Provider to 1.9.0 (latest stable version) -->
+        <!-- JUnit Platform Surefire Provider for running tests with Maven -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.9.0</version>
+            <version>1.8.2</version>
             <scope>test</scope>
         </dependency>
 
-        <!-- Selenium WebDriver Dependency -->
+        <!-- Selenium WebDriver dependencies -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
         </dependency>
-    </dependencies>
 
-    <repositories>
-        <!-- Add JUnit Platform repository (if required) -->
-        <repository>
-            <id>junit-platform</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
+        <!-- WebDriver manager to manage browser driver binaries -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
+        <!-- Add any other dependencies you need -->
+    </dependencies>
 
     <build>
         <plugins>
-            <!-- Surefire Plugin to run JUnit 5 tests -->
+            <!-- Surefire Plugin for running JUnit tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version> <!-- Use a stable version -->
+                <version>2.22.2</version>
                 <configuration>
-                    <!-- Run tests using JUnit 5 -->
-                    <useModulePath>false</useModulePath>
+                    <dependenciesToScan>
+                        <dependency>org.junit.jupiter:junit-jupiter-api</dependency>
+                        <dependency>org.junit.jupiter:junit-jupiter-engine</dependency>
+                    </dependenciesToScan>
                 </configuration>
-            </plugin>
-
-            <!-- SonarQube Maven Plugin -->
-            <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.9.0.2155</version> <!-- Add version of SonarQube plugin -->
             </plugin>
         </plugins>
     </build>
 
+    <repositories>
+        <!-- Maven Central repository -->
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
 </project>
