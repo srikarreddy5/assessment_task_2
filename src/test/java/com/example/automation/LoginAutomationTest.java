@@ -4,15 +4,20 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LoginAutomationTest {
     @Test
     public void testLogin() {
-        // Set up the WebDriver
+        // Set up ChromeOptions and add the argument to allow all origins
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        
+        // Set up the WebDriver with ChromeOptions
         System.setProperty("webdriver.chrome.driver", "C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe");  // Fixed path
-        WebDriver driver = new ChromeDriver();
+        WebDriver driver = new ChromeDriver(options); // Pass options here
         
         try {
             // Navigate to the login page
