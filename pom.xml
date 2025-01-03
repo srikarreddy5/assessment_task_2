@@ -4,20 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>assessment_task_2</artifactId>
+    <groupId>com.example.automation</groupId>
+    <artifactId>login-automation</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>assessment_task_2</name>
+    <name>login-automation</name>
     <url>http://maven.apache.org</url>
-
-    <repositories>
-        <repository>
-            <id>central</id>
-            <url>https://repo.maven.apache.org/maven2</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <!-- JUnit 5 dependencies -->
@@ -46,11 +39,18 @@
             <artifactId>selenium-java</artifactId>
             <version>4.10.0</version>
         </dependency>
+
+        <!-- Selenium WebDriver for Chrome (optional) -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>4.10.0</version>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Maven Surefire Plugin (updated version for running tests) -->
+            <!-- Maven Surefire Plugin to run tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -58,7 +58,6 @@
                 <configuration>
                     <skipTests>false</skipTests> <!-- Ensure tests are not skipped -->
                     <testFailureIgnore>false</testFailureIgnore> <!-- Fail the build if tests fail -->
-                    <argLine>-Duser.timezone=UTC</argLine> <!-- Set timezone for consistency in tests -->
                 </configuration>
             </plugin>
         </plugins>
