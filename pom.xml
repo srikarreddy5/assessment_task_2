@@ -29,11 +29,11 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit Platform Surefire Provider to support JUnit 5 in Surefire plugin -->
+        <!-- Updated JUnit Platform Surefire Provider to 1.9.0 -->
         <dependency>
             <groupId>org.junit.platform</groupId>
             <artifactId>junit-platform-surefire-provider</artifactId>
-            <version>1.8.2</version>
+            <version>1.9.0</version>
             <scope>test</scope>
         </dependency>
 
@@ -44,6 +44,14 @@
             <version>4.0.0</version>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <!-- Add JUnit Platform repository (if required) -->
+        <repository>
+            <id>junit-platform</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
@@ -62,6 +70,7 @@
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.9.0.2155</version> <!-- Add version of SonarQube plugin -->
             </plugin>
         </plugins>
     </build>
