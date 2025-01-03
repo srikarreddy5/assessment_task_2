@@ -6,29 +6,29 @@ pipeline {
   }
 
   environment {
-    // Set the path for ChromeDriver explicitly
-    CHROME_DRIVER_PATH = 'C:\\Users\\SRIJA\\Downloads\\chromedriver_win32_4\\chromedriver.exe' // Update this with the path where your new ChromeDriver is stored
+    // Set the path for ChromeDriver explicitly, ensure the path is accessible by Jenkins agent
+    CHROME_DRIVER_PATH = '/path/to/your/chromedriver' // Update with the correct path where ChromeDriver is located
   }
 
   stages {
     stage('Checkout') {
       steps {
-        // Cloning the repository from GitHub, specifying the branch explicitly
+        // Cloning the repository from GitHub
         git branch: 'main', url: 'https://github.com/srikarreddy5/assessment_task_2.git'
       }
     }
 
     stage('Build') {
       steps {
-        // Use 'bat' for Windows agents, 'sh' for Linux/Unix agents
-        bat 'mvn clean package' // For Linux/Unix systems, change to 'sh mvn clean package'
+        // Build the project using Maven
+        bat 'mvn clean package' // Use 'sh' for Linux/Unix agents
       }
     }
 
     stage('Test') {
       steps {
-        // Running tests, adjust the command if needed for your environment
-        bat 'mvn test' // Change to 'sh mvn test' for Linux/Unix if necessary
+        // Running tests
+        bat 'mvn test' // Change to 'sh mvn test' for Linux/Unix
       }
     }
 
@@ -39,9 +39,8 @@ pipeline {
       }
       steps {
         // Using credentials for SonarQube login
-        withCredentials([string(credentialsId: 'sonarqube_id', variable: 'SONAR_AUTH_TOKEN')]) {
-          // Integrating with SonarQube analysis
-          withSonarQubeEnv('srikar_reddy') { // Ensure 'srikar_reddy' is configured in Jenkins
+        withCredentials([string(credentialsId: 'sonarqube_id', variable: 'SONAR_AUTH_TOKEN', sandbox: false)]) {
+          withSonarQubeEnv('srikar_reddy') {
             bat 'mvn sonar:sonar -Dsonar.login=%SONAR_AUTH_TOKEN%' // Change to 'sh' if using a Linux/Unix agent
           }
         }
@@ -52,7 +51,7 @@ pipeline {
       steps {
         // Record warnings and issues from Maven or Java tools
         recordIssues(
-          tools: [java(), maven()], // Make sure Java and Maven tools are set up in Jenkins
+          tools: [java(), maven()], // Ensure Java and Maven tools are set up in Jenkins
           qualityGates: [[threshold: 5, unstable: true]] // Customize this threshold as needed
         )
       }
